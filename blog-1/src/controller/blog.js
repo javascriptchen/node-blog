@@ -2,13 +2,11 @@
  * @Author: chenchen 
  * @Date: 2019-03-24 16:23:56 
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-24 16:24:38
+ * @Last Modified time: 2019-03-24 22:42:22
  */
-// 获取博客列表
 const getList = (author, keyword) => {
   // 先返回假数据
-  return [
-    {
+  return [{
       id: 1,
       title: "标题A",
       content: "内容A",
@@ -25,7 +23,6 @@ const getList = (author, keyword) => {
   ];
 };
 
-// 获取博客详情
 const getDetail = id => {
   return {
     id: 1,
@@ -36,7 +33,25 @@ const getDetail = id => {
   };
 };
 
+const newBlog = (blogData = {}) => {
+  // blogData 是一个博客对象 ，包含title,content属性
+  return {
+    id: 3 // 表示新建博客，插入到数据表的id
+  }
+}
+
+const updateBlog = (id, blogData = {}) => {
+  return true
+}
+
+const delBlog = id=>{
+  return true
+}
+
 module.exports = {
   getList,
-  getDetail
+  getDetail,
+  newBlog,
+  updateBlog,
+  delBlog
 };

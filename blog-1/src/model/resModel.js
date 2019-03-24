@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:33
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-24 16:01:01
+ * @Last Modified time: 2019-03-24 22:45:01
  */
 class BaseModel {
   constructor(data, message) {
