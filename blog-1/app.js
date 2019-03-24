@@ -2,11 +2,36 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-24 16:18:02
+ * @Last Modified time: 2019-03-24 17:22:09
  */
-const querystring = require('querystring')
+const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
 const handleBlogRouter = require("./src/router/blog");
+
+// 用于获取post data
+const getPostData = req => {
+  const promise = new Promise((resolve, reject) => {
+    if (req.method !== "POST") {
+      resolve({});
+      return;
+    }
+    if (req.headers["Content-type"] !== "application/json") {
+      resolve({});
+      return;
+    }
+    let postData = "";
+    req.on("data", chunk => {
+      postData += chunk.toString();
+    });
+    req.on("end", () => {
+      if (!postData) {
+        resolve({});
+        return;
+      }
+      resolve(JSON.parse(postData));
+    });
+  });
+};
 
 const serverHandle = (req, res) => {
   res.setHeader("Content-type", "application/json");
@@ -15,7 +40,7 @@ const serverHandle = (req, res) => {
   req.path = url.split("?")[0];
 
   // 获取query
-  req.query = querystring.parse(url.split('?')[1])
+  req.query = querystring.parse(url.split("?")[1]);
 
   // 处理blog路由
   const blogData = handleBlogRouter(req, res);
