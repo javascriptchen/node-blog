@@ -9,7 +9,9 @@ const con = mysql.createConnection({
 })
 
 con.connect()
-const sql = 'select * from blogs'
+// const sql = 'select * from blogs'
+// const sql = 'update blogs set author="李四2" where id=1'
+const sql = "insert into users (username,`password`,realname) values('wangwu','123','王五')"
 
 con.query(sql,(err,result)=>{
     if(err){
