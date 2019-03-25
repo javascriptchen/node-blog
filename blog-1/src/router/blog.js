@@ -2,7 +2,7 @@
  * @Author: chenchen 
  * @Date: 2019-03-24 15:22:42 
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-24 22:47:04
+ * @Last Modified time: 2019-03-25 18:27:46
  */
 const {
   getList,
@@ -22,15 +22,23 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客列表
   if (method === "GET" && req.path === "/api/blog/list") {
-    const author = req.query.author || ''
-    const keyword = req.query.keyword || ''
-    const listData = getList(author, keyword)
-    return new SuccessModel(listData)
+    const author = req.query.author || '' // 作者
+    const keyword = req.query.keyword || '' //title 模糊查询
+    // const listData = getList(author, keyword)
+    // return new SuccessModel(listData)
+    const data = getList(author, keyword);
+    return data.then(listData => {
+      return new SuccessModel(listData)
+    })
   }
   // 获取博客详情
   if (method === "GET" && req.path === "/api/blog/detail") {
-    const data = getDetail(id)
-    return new SuccessModel(data)
+    // const data = getDetail(id)
+    // return new SuccessModel(data)
+    const result = getDetail(id)
+    return result.then(data => {
+      return new SuccessModel(data)
+    })
   }
   // 新建博客接口
   if (method === "POST" && req.path === "/api/blog/new") {
