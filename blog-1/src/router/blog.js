@@ -2,7 +2,7 @@
  * @Author: chenchen 
  * @Date: 2019-03-24 15:22:42 
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-25 18:27:46
+ * @Last Modified time: 2019-03-25 20:10:06
  */
 const {
   getList,
@@ -42,26 +42,37 @@ const handleBlogRouter = (req, res) => {
   }
   // 新建博客接口
   if (method === "POST" && req.path === "/api/blog/new") {
-    const data = newBlog(req.body)
-    return new SuccessModel(data)
+    // const data = newBlog(req.body)
+    // return new SuccessModel(data)
+    req.body.author = "zhangsan" // 假数据
+    const result = newBlog(req.body)
+    return result.then(data => {
+      return new SuccessModel(data)
+    })
   }
   // 更新博客接口
   if (method === "POST" && req.path === "/api/blog/update") {
     const result = updateBlog(id, req.body)
-    if (result) {
-      return new SuccessModel(result)
-    } else {
-      return new ErrorModel("更新博客失败")
-    }
+    return result.then(result => {
+      if (result) {
+        return new SuccessModel(result)
+      } else {
+        return new ErrorModel("更新博客失败")
+      }
+    })
+
   }
   // 删除博客接口
   if (method === "POST" && req.path === "/api/blog/del") {
-    const result = delBlog(id)
-    if (result) {
-      return new SuccessModel(result)
-    } else {
-      return new ErrorModel("删除博客失败")
-    }
+    const author = "zhangsan" // 假数据
+    const result = delBlog(id, author)
+    return result.then(result => {
+      if (result) {
+        return new SuccessModel(result)
+      } else {
+        return new ErrorModel("删除博客失败")
+      }
+    })
   }
 };
 
