@@ -2,7 +2,7 @@
  * @Author: chenchen 
  * @Date: 2019-03-24 15:22:45 
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-25 16:54:17
+ * @Last Modified time: 2019-03-25 23:09:01
  */
 const {
   loginCheck
@@ -21,11 +21,12 @@ const handleUserRouter = (req, res) => {
       password
     } = req.body;
     const result = loginCheck(username, password)
-    if (result) {
-      return new SuccessModel(result)
-    }else{
+    return result.then(data => {
+      if (data) {
+        return new SuccessModel(data);
+      }
       return new ErrorModel("登录失败")
-    }
+    })
   }
 };
 

@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-25 20:08:57
+ * @Last Modified time: 2019-03-25 20:19:21
  */
 const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
@@ -65,9 +65,16 @@ const serverHandle = (req, res) => {
       return;
     }
     // 处理user路由
-    const userData = handleUserRouter(req, res);
-    if (userData) {
-      res.end(JSON.stringify(userData));
+    // const userData = handleUserRouter(req, res);
+    // if (userData) {
+    //   res.end(JSON.stringify(userData));
+    //   return;
+    // }
+    const userResult = handleUserRouter(req, res);
+    if (userResult) {
+      userResult.then(userData => {
+        res.end(JSON.stringify(userData))
+      })
       return;
     }
     // 未命中路由： 返回404
