@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-25 20:19:21
+ * @Last Modified time: 2019-03-26 09:45:59
  */
 const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
@@ -48,6 +48,18 @@ const serverHandle = (req, res) => {
 
   // 获取query
   req.query = querystring.parse(url.split("?")[1]);
+
+  // 解析cookie
+  req.cookie = {}
+  const cookieStr = req.headers.cookie || ''
+  cookieStr.split(';').map(item => {
+    if (!item) return;
+    const arr = item.split('=')
+    const key = arr[0]
+    const value = arr[1]
+    req.cookie[key] = value
+  })
+  console.log('req.cookie is',req.cookie);
 
   getPostData(req).then(postData => {
     req.body = postData;
