@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-26 09:45:59
+ * @Last Modified time: 2019-03-27 00:53:45
  */
 const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
@@ -59,7 +59,7 @@ const serverHandle = (req, res) => {
     const value = arr[1]
     req.cookie[key] = value
   })
-  console.log('req.cookie is',req.cookie);
+  // console.log('req.cookie is',req.cookie);
 
   getPostData(req).then(postData => {
     req.body = postData;

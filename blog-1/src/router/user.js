@@ -2,12 +2,17 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:45
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-26 20:36:58
+ * @Last Modified time: 2019-03-27 00:50:49
  */
 const { login } = require("../controller/user");
 
 const { ErrorModel, SuccessModel } = require("../model/resModel");
-// const getCookieExpires = 
+const getCookieExpires = () => {
+  const d = new Date();
+  d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
+  console.log("d.toGMTstring() is", d.toGMTString());
+  return d.toGMTString();
+};
 const handleUserRouter = (req, res) => {
   const method = req.method;
   // 登陆
@@ -16,7 +21,12 @@ const handleUserRouter = (req, res) => {
     const result = login(username, password);
     return result.then(data => {
       if (data.username) {
-        res.setHeader("Set-Cookie", `username=${data.username};path='/';httpOnly;expires=${getCookieExpires()}`);
+        res.setHeader(
+          "Set-Cookie",
+          `username=${
+            data.username
+          };path='/';httpOnly;expires=${getCookieExpires()}`
+        );
         return new SuccessModel(data);
       }
       return new ErrorModel("登录失败");
