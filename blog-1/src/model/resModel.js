@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:33
  * @Last Modified by: chenchen
- * @Last Modified time: 2019-03-24 22:45:01
+ * @Last Modified time: 2019-03-27 18:32:35
  */
 class BaseModel {
   constructor(data, message) {
@@ -23,7 +23,7 @@ class BaseModel {
 class SuccessModel extends BaseModel {
   constructor(data, message) {
     super(data, message);
-    this.errno = 0;
+    this.errno = 0
   }
 }
 
