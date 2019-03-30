@@ -2,7 +2,7 @@
  * @Author: chenchen 
  * @Date: 2019-03-24 15:22:42 
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-30 16:14:13
+ * @Last Modified time: 2019-03-30 17:56:42
  */
 const {
   getList,
@@ -17,6 +17,7 @@ const {
 } = require('../model/resModel')
 
 const loginCheck = req => {
+  console.log("req.session",req.session);
   if (!req.session.username) {
     return Promise.resolve(
       new ErrorModel('尚未登录')
@@ -40,8 +41,7 @@ const handleBlogRouter = (req, res) => {
       const loginCheckResult = loginCheck(req)
       if (loginCheckResult) {
         // 未登录
-        console.log(loginCheck)
-        return loginCheck
+        return loginCheckResult
       }
       // 强制查询自己的文章
       author = req.session.username
@@ -69,8 +69,7 @@ const handleBlogRouter = (req, res) => {
     const loginCheckResult = loginCheck(req)
     if (loginCheckResult) {
       // 未登录
-      console.log(loginCheck)
-      return loginCheck
+      return loginCheckResult
     }
 
     req.body.author = req.session.username // 假数据
@@ -84,8 +83,7 @@ const handleBlogRouter = (req, res) => {
     const loginCheckResult = loginCheck(req)
     if (loginCheckResult) {
       // 未登录
-      console.log(loginCheck)
-      return loginCheck
+      return loginCheckResult
     }
 
     const result = updateBlog(id, req.body)
@@ -103,8 +101,7 @@ const handleBlogRouter = (req, res) => {
     const loginCheckResult = loginCheck(req)
     if (loginCheckResult) {
       // 未登录
-      console.log(loginCheck)
-      return loginCheck
+      return loginCheckResult
     }
 
     const author = req.session.username // 假数据

@@ -2,7 +2,7 @@
  * @Author: chenchen 
  * @Date: 2019-03-25 17:56:09 
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-29 16:17:12
+ * @Last Modified time: 2019-03-30 16:48:37
  */
 const env = process.env.NODE_ENV
 
@@ -13,7 +13,7 @@ let REDIS_CONF
 if (env === 'dev') {
 	// mysql
 	MYSQL_CONF = {
-		host: 'localhost',
+		host: '127.0.0.1',
 		user: 'root',
 		password: '123456',
 		port: '3306',
@@ -30,7 +30,7 @@ if (env === 'dev') {
 if (env === 'production') {
 	// mysql
 	MYSQL_CONF = {
-		host: 'localhost',
+		host: '127.0.0.1',
 		user: 'root',
 		password: '123456',
 		port: '3306',

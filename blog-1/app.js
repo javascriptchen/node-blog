@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-30 15:41:16
+ * @Last Modified time: 2019-03-30 17:33:18
  */
 // nodejs自带 解析query
 const querystring = require("querystring");
@@ -64,6 +64,7 @@ const serverHandle = (req, res) => {
   // 解析session（使用redis）
   let needSetCookie = false;
   let userId = req.cookie.userid;
+  console.log("userId",userId);
   if (!userId) {
     needSetCookie = true;
     userId = `${Date.now()}_${Math.random()}`;
@@ -74,6 +75,8 @@ const serverHandle = (req, res) => {
   req.sessionId = userId;
   get(req.sessionId)
     .then(sessionData => {
+      console.log("req.sessionId userId",req.sessionId,userId);
+      console.log("sessionData",sessionData);
       if (!sessionData) {
         // 初始化redis 中session的初始值
         set(req.sessionId, {});
@@ -96,6 +99,7 @@ const serverHandle = (req, res) => {
       const blogResult = handleBlogRouter(req, res);
       if (blogResult) {
         blogResult.then(blogData => {
+          // console.log(blogData);
           if (needSetCookie) {
             res.setHeader(
               "Set-Cookie",
@@ -113,8 +117,10 @@ const serverHandle = (req, res) => {
       //   return;
       // }
       const userResult = handleUserRouter(req, res);
+
       if (userResult) {
         userResult.then(userData => {
+          // console.log(userData);
           if (needSetCookie) {
             res.setHeader(
               "Set-Cookie",

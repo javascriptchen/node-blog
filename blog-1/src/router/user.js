@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:45
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-30 15:10:18
+ * @Last Modified time: 2019-03-30 17:25:27
  */
 const {
   login
@@ -33,6 +33,8 @@ const handleUserRouter = (req, res) => {
         req.session.username = data.username;
         req.session.realname = data.realname;
         // 同步到redis
+        
+        console.log("req.session:",req.session);
         set(req.sessionId, req.session)
         return new SuccessModel(data);
       }
@@ -40,17 +42,17 @@ const handleUserRouter = (req, res) => {
     });
   }
 
-  // // 登陆验证的测试
-  // if (method === "GET" && req.path === "/api/user/login-test") {
-  //   if (req.session.username) {
-  //     return Promise.resolve(
-  //       new SuccessModel({
-  //         session: req.session
-  //       })
-  //     );
-  //   }
-  //   return Promise.resolve(new ErrorModel("尚未登录"));
-  // }
+  // 登陆验证的测试
+  if (method === "GET" && req.path === "/api/user/login-test") {
+    if (req.session.username) {
+      return Promise.resolve(
+        new SuccessModel({
+          session: req.session
+        })
+      );
+    }
+    return Promise.resolve(new ErrorModel("尚未登录"));
+  }
 };
 
 module.exports = handleUserRouter;
