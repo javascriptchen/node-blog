@@ -2,55 +2,29 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-29 17:10:33
+ * @Last Modified time: 2019-03-30 15:41:16
  */
+// nodejs自带 解析query
 const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
 const handleBlogRouter = require("./src/router/blog");
-const { get, set } = require("./src/db/redis");
+const {
+  get,
+  set
+} = require("./src/db/redis");
 
 // cookie过期时间
 const getCookieExpires = () => {
   const d = new Date();
   d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
-  console.log("d.toGMTstring() is", d.toGMTString());
+  // console.log("d.toGMTstring() is", d.toGMTString());
   return d.toGMTString();
 };
 
 // session数据
 // const SESSION_DATA = {};
 
-// 用于获取post data
-const getPostData = req => {
-  const promise = new Promise((resolve, reject) => {
-    if (req.method !== "POST") {
-      resolve({
-        post: false
-      });
-      return;
-    }
-    if (req.headers["content-type"] !== "application/json") {
-      resolve({
-        "content-type": "false"
-      });
-      return;
-    }
-    let postData = "";
-    req.on("data", chunk => {
-      postData += chunk.toString();
-    });
-    req.on("end", () => {
-      if (!postData) {
-        resolve({
-          postData: "false"
-        });
-        return;
-      }
-      resolve(JSON.parse(postData));
-    });
-  });
-  return promise;
-};
+
 
 const serverHandle = (req, res) => {
   res.setHeader("Content-type", "application/json");
@@ -64,6 +38,7 @@ const serverHandle = (req, res) => {
   // 解析cookie
   req.cookie = {};
   const cookieStr = req.headers.cookie || "";
+  // console.log(cookieStr);
   cookieStr.split(";").map(item => {
     if (!item) return;
     const arr = item.split("=");
@@ -95,6 +70,7 @@ const serverHandle = (req, res) => {
     // 初始化redis 中session的初始值
     set(userId, {});
   }
+  // 为req创建一个sessionId属性，
   req.sessionId = userId;
   get(req.sessionId)
     .then(sessionData => {
@@ -106,7 +82,7 @@ const serverHandle = (req, res) => {
       } else {
         req.session = sessionData;
       }
-      console.log("req.session:", req.session);
+      // console.log("req.session:", req.session);
       return getPostData(req);
     })
     .then(postData => {
@@ -156,6 +132,39 @@ const serverHandle = (req, res) => {
       res.write("404 Not Found\n");
       res.end();
     });
+};
+
+// 用于获取post请求的data
+const getPostData = req => {
+  const promise = new Promise((resolve, reject) => {
+    if (req.method !== "POST") {
+      resolve({
+        post: false
+      });
+      return;
+    }
+    if (req.headers["content-type"] !== "application/json") {
+      resolve({
+        "content-type": "false"
+      });
+      return;
+    }
+    let postData = "";
+    req.on("data", chunk => {
+      postData += chunk.toString();
+    });
+    // console.log(postData);
+    req.on("end", () => {
+      if (!postData) {
+        resolve({
+          postData: "false"
+        });
+        return;
+      }
+      resolve(JSON.parse(postData));
+    });
+  });
+  return promise;
 };
 
 module.exports = serverHandle;

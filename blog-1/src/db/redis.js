@@ -9,6 +9,7 @@ client.on("error", err => {
 
 const set = (key, val) => {
   if (typeof val === "object") {
+    // 这边需要val是个string
     val = JSON.stringify(val);
   }
   client.set(key, val, redis.print);

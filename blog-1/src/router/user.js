@@ -2,7 +2,7 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:45
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-28 01:01:38
+ * @Last Modified time: 2019-03-30 15:10:18
  */
 const {
   login
@@ -13,16 +13,19 @@ const {
   SuccessModel
 } = require("../model/resModel");
 
-
+const {
+  set,
+  get
+} = require('../db/redis')
 
 const handleUserRouter = (req, res) => {
   const method = req.method;
   // 登陆
-  if (method === "GET" && req.path === "/api/user/login") {
+  if (method === "POST" && req.path === "/api/user/login") {
     const {
       username,
       password
-    } = req.query;
+    } = req.body;
     const result = login(username, password);
     return result.then(data => {
       if (data.username) {
@@ -37,17 +40,17 @@ const handleUserRouter = (req, res) => {
     });
   }
 
-  // 登陆验证的测试
-  if (method === "GET" && req.path === "/api/user/login-test") {
-    if (req.session.username) {
-      return Promise.resolve(
-        new SuccessModel({
-          session: req.session
-        })
-      );
-    }
-    return Promise.resolve(new ErrorModel("尚未登录"));
-  }
+  // // 登陆验证的测试
+  // if (method === "GET" && req.path === "/api/user/login-test") {
+  //   if (req.session.username) {
+  //     return Promise.resolve(
+  //       new SuccessModel({
+  //         session: req.session
+  //       })
+  //     );
+  //   }
+  //   return Promise.resolve(new ErrorModel("尚未登录"));
+  // }
 };
 
 module.exports = handleUserRouter;
