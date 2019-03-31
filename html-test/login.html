@@ -37,9 +37,10 @@
                 username,
                 password
             }
-            post(url, data,{withCredentials:true}).then(res => {
-                console.log(res);
-                // return;
+            const xhrFields= {
+                withCredentials: true
+            }
+            post(url, data,xhrFields).then(res => {
                 if (res.errno === 0) {
                     // 登录成功
                     location.href = './admin.html'

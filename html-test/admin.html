@@ -86,7 +86,9 @@
         }
 
         // 加载数据
-        get(url).then(res => {
+        get(url,{
+                withCredentials: true
+            }).then(res => {
             if (res.errno !== 0) {
                 alert('数据错误')
                 return
