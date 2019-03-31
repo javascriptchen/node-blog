@@ -2,11 +2,12 @@
  * @Author: chenchen
  * @Date: 2019-03-24 15:22:47
  * @Last Modified by: 陈晨
- * @Last Modified time: 2019-03-31 01:37:47
+ * @Last Modified time: 2019-03-31 13:16:05
  */
 // nodejs自带 解析query
 const querystring = require("querystring");
 const handleUserRouter = require("./src/router/user");
+const { access } = require('./src/utils/log')
 const handleBlogRouter = require("./src/router/blog");
 const {
   get,
@@ -27,6 +28,9 @@ const getCookieExpires = () => {
 
 
 const serverHandle = (req, res) => {
+  // 记录 access log
+  access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`)
+  
   res.setHeader("Content-type", "application/json");
   // 获取path
   const url = req.url;
